@@ -17,7 +17,6 @@ class YelpServices: NSObject{
     static let oauth_token_secret = "Mc6MhG7ZI6uIWmubcF2ktuQg8TU"
     
     static func searchYelp(_ searchTerm: String, location: CLLocation?, completionHandler: @escaping ([Restaurant]) -> Void) {
-
         let oauthswift = OAuthSwiftClient(consumerKey: oauth_consumer_key, consumerSecret: oauth_consumer_secret, oauthToken: oauth_token, oauthTokenSecret: oauth_token_secret, version: .oauth1)
         let urlString = String.init(format: "https://api.yelp.com/v2/search/")
         var parameters = ["term": searchTerm, "limit" : "10"]
