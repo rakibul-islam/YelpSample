@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0830"
+   LastUpgradeVersion = "0700"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F2D553DF1CBECFB5001EA4AB"
-               BuildableName = "YelpSample.app"
-               BlueprintName = "YelpSample"
-               ReferencedContainer = "container:YelpSample.xcodeproj">
+               BlueprintIdentifier = "7E56284BD34BB2D563345675D1E40D93"
+               BuildableName = "Pods_YelpSample.framework"
+               BlueprintName = "Pods-YelpSample"
+               ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F2D553DF1CBECFB5001EA4AB"
-            BuildableName = "YelpSample.app"
-            BlueprintName = "YelpSample"
-            ReferencedContainer = "container:YelpSample.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F2D553DF1CBECFB5001EA4AB"
-            BuildableName = "YelpSample.app"
-            BlueprintName = "YelpSample"
-            ReferencedContainer = "container:YelpSample.xcodeproj">
+            BlueprintIdentifier = "7E56284BD34BB2D563345675D1E40D93"
+            BuildableName = "Pods_YelpSample.framework"
+            BlueprintName = "Pods-YelpSample"
+            ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -70,16 +60,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "F2D553DF1CBECFB5001EA4AB"
-            BuildableName = "YelpSample.app"
-            BlueprintName = "YelpSample"
-            ReferencedContainer = "container:YelpSample.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

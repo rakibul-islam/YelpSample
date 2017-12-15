@@ -34,16 +34,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     //MARK: UITableView data source methods
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 1;
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return restaurants.count;
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("cellIdentifier");
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier");
         
         let restaurant = restaurants[indexPath.row]
         cell?.textLabel?.text = restaurant.name
@@ -53,9 +53,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     //MARK: Navigation
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showRestaurant" {
-            let restaurantViewController = segue.destinationViewController as! RestaurantViewController
+            let restaurantViewController = segue.destination as! RestaurantViewController
             let indexPath = tableView.indexPathForSelectedRow!
             let selectedRestaurant = restaurants[indexPath.row]
             restaurantViewController.restaurant = selectedRestaurant
@@ -64,24 +64,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     //MARK: UISearchBar delegate methods
     
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let searchText = searchBar.text
         YelpServices.searchYelp(searchText!, location: locationManager.location, completionHandler: { (restaurants) in
             self.restaurants = restaurants
             self.tableView.reloadData()
             if restaurants.count == 0 {
-                let alertController = UIAlertController(title: "Error", message: "No results found!", preferredStyle: .Alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
-                self.presentViewController(alertController, animated: true, completion: nil)
+                let alertController = UIAlertController(title: "Error", message: "No results found!", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
             }
         })
     }
     
     //MARK: UIBarButton methods
     
-    @IBAction func sortButtonClicked(sender: AnyObject) {
-        restaurants.sortInPlace({ (a, b) -> Bool in
-            return a.name.compare(b.name) == NSComparisonResult.OrderedAscending
+    @IBAction func sortButtonClicked(_ sender: AnyObject) {
+        restaurants.sort(by: { (a, b) -> Bool in
+            return a.name.compare(b.name) == ComparisonResult.orderedAscending
         })
         self.tableView.reloadData()
     }
