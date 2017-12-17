@@ -45,7 +45,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier");
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier")
         
         let restaurant = restaurants[indexPath.row]
         cell?.textLabel?.text = restaurant.name
@@ -56,11 +56,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showRestaurant" {
-            let restaurantViewController = segue.destination as! RestaurantViewController
+        if let restaurantViewController = segue.destination as? RestaurantViewController {
             let indexPath = tableView.indexPathForSelectedRow!
-            let selectedRestaurant = restaurants[indexPath.row]
-            restaurantViewController.restaurant = selectedRestaurant
+            restaurantViewController.restaurant = restaurants[indexPath.row]
         }
     }
     
@@ -77,7 +75,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     self.present(alertController, animated: true, completion: nil)
                 }
             }, failureBlock: { (error) in
-                let alertController = UIAlertController.init(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(alertController, animated: true, completion: nil)
             })

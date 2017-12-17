@@ -16,24 +16,26 @@ class RestaurantViewController: UIViewController {
     @IBOutlet weak var reviewTextView: UITextView!
     @IBOutlet weak var ratingImageView: UIImageView!
     
-    var restaurant: Restaurant?
+    var restaurant: Restaurant!
     lazy var yelpServices: YelpServicesProtocol = YelpServices()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        if let restaurant = restaurant {
-            navigationItem.title = "Restaurant"
-            nameLabel.text = restaurant.name
-            addressLabel.text = restaurant.displayMultilineAddress()
-            reviewTextView.text = restaurant.latestReview ?? ""
-            yelpServices.loadImageFrom(urlString: restaurant.photoUrl, completionHandler: { (image) in
+        navigationItem.title = "Restaurant"
+        nameLabel.text = restaurant.name
+        addressLabel.text = restaurant.displayMultilineAddress()
+        reviewTextView.text = restaurant.latestReview ?? ""
+        yelpServices.loadImageFrom(urlString: restaurant.photoUrl, completionHandler: { (image) in
+            DispatchQueue.main.async { [unowned self] in
                 self.photoImageView.image = image
-            })
-            yelpServices.loadImageFrom(urlString: restaurant.ratingImageUrl, completionHandler: { (image) in
+            }
+        })
+        yelpServices.loadImageFrom(urlString: restaurant.ratingImageUrl, completionHandler: { (image) in
+            DispatchQueue.main.async { [unowned self] in
                 self.ratingImageView.image = image
-            })
-        }
+            }
+        })
     }
 }
