@@ -17,6 +17,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     var geocoder: CLGeocoder!
     var restaurants = [Restaurant]()
     
+    lazy var yelpServices: YelpServicesProtocol = YelpServices()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -65,16 +67,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: UISearchBar delegate methods
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let searchText = searchBar.text
-        YelpServices.searchYelp(searchText!, location: locationManager.location, completionHandler: { (restaurants) in
-            self.restaurants = restaurants
-            self.tableView.reloadData()
-            if restaurants.count == 0 {
-                let alertController = UIAlertController(title: "Error", message: "No results found!", preferredStyle: .alert)
+        if let searchText = searchBar.text {
+            yelpServices.searchYelpFor(term: searchText, location: locationManager.location, successBlock: { (restaurants) in
+                self.restaurants = restaurants
+                self.tableView.reloadData()
+                if restaurants.count == 0 {
+                    let alertController = UIAlertController(title: "Error", message: "No results found!", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }, failureBlock: { (error) in
+                let alertController = UIAlertController.init(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(alertController, animated: true, completion: nil)
-            }
-        })
+            })
+        }
     }
     
     //MARK: UIBarButton methods

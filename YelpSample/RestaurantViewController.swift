@@ -27,16 +27,20 @@ class RestaurantViewController: UIViewController {
             nameLabel.text = restaurant.name
             addressLabel.text = restaurant.displayMultilineAddress()
             reviewTextView.text = restaurant.latestReview
-            YelpServices.loadImageFromUrl(restaurant.photoUrl, completionHandler: { (image) in
-                if image != nil {
-                    self.photoImageView.image = image
-                }
-            })
-            YelpServices.loadImageFromUrl(restaurant.ratingImageUrl, completionHandler: { (image) in
-                if image != nil {
-                    self.ratingImageView.image = image
-                }
-            })
+            if let photoUrl = restaurant.photoUrl {
+                YelpServices.loadImageFromUrl(photoUrl, completionHandler: { (image) in
+                    if image != nil {
+                        self.photoImageView.image = image
+                    }
+                })
+            }
+            if let ratingImgUrl = restaurant.ratingImageUrl {
+                YelpServices.loadImageFromUrl(ratingImgUrl, completionHandler: { (image) in
+                    if image != nil {
+                        self.ratingImageView.image = image
+                    }
+                })
+            }
         }
     }
 

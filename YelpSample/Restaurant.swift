@@ -13,45 +13,37 @@ class Restaurant: NSObject {
     var name: String!
     var address: String!
     var cityStateZip: String?
-    var photoUrl: String!
+    var photoUrl: String?
     var latestReview: String!
-    var ratingImageUrl: String!
+    var ratingImageUrl: String?
     
-    init?(dictionary: NSDictionary) {
-        let name = dictionary["name"] as? String
-        let location = dictionary["location"] as! NSDictionary
-        let displayAddress = location["display_address"] as! [String]
-        let address = displayAddress[0]
-        let cityStateZip = displayAddress.count >= 3 ? displayAddress[2] : displayAddress[1]
-        let photoUrl = dictionary["image_url"] as? String
-        let latestReview = dictionary["snippet_text"] as? String
-        let ratingImageUrl = dictionary["rating_img_url_large"] as? String
-        self.name = name
-        self.address = address
-        self.cityStateZip = cityStateZip
-        self.photoUrl = photoUrl
-        self.latestReview = latestReview
-        self.ratingImageUrl = ratingImageUrl
-        
-        super.init()
-        
-        if dictionary.count == 0 || name == nil {
+    init?(dict: [String: Any]) {
+        guard !dict.isEmpty, let name = dict["name"] as? String else {
             return nil
         }
+        super.init()
+        self.name = name
+        if let location = dict["location"] as? [String: Any], let displayAddress = location["display_address"] as? [String] {
+            self.address = displayAddress[0]
+            self.cityStateZip = displayAddress.count >= 3 ? displayAddress[2] : displayAddress[1]
+        }
+        self.photoUrl = dict["image_url"] as? String
+        self.ratingImageUrl = dict["rating_img_url_large"] as? String
+        self.latestReview = dict["snippet_text"] as? String
     }
     
     func displayFullAddress() -> String {
-        if cityStateZip != nil {
-            return address + ", " + cityStateZip!
+        guard let secondPart = cityStateZip else {
+            return address
         }
-        return address
+        return address + ", " + secondPart
     }
     
     func displayMultilineAddress() -> String {
-        if cityStateZip != nil {
-            return address + "\n" + cityStateZip!
+        guard let secondLine = cityStateZip else {
+            return address
         }
-        return address
+        return address + "\n" + secondLine
     }
     
 }
