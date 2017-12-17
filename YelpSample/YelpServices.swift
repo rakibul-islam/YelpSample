@@ -12,6 +12,7 @@ import CoreLocation
 
 protocol YelpServicesProtocol {
     func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error) -> Void)
+    func loadImageFrom(urlString: String?, completionHandler: @escaping (UIImage?) -> Void)
 }
 
 class YelpServices: YelpServicesProtocol {
@@ -52,16 +53,16 @@ class YelpServices: YelpServicesProtocol {
     let oauth_token = "iLmN_54DxqdncbbD8TFROZrIErQKIvGL"
     let oauth_token_secret = "Mc6MhG7ZI6uIWmubcF2ktuQg8TU"
     
-    static func loadImageFromUrl(_ imageUrl: String, completionHandler: @escaping (UIImage?) -> Void) {
-        let session = URLSession.shared
-        let url = URL.init(string: imageUrl)!
-        let sessionTask = session.dataTask(with: url, completionHandler:  { (data, response, error) in
-            if data != nil {
-                let image = UIImage.init(data: data!)
-                completionHandler(image)
-            }
-        })
-        sessionTask.resume()
+    func loadImageFrom(urlString: String?, completionHandler: @escaping (UIImage?) -> Void) {
+        if let string = urlString, let url = URL(string: string) {
+            let session = URLSession.shared
+            let sessionTask = session.dataTask(with: url, completionHandler:  { (data, response, error) in
+                if let imageData = data {
+                    let image = UIImage(data: imageData)
+                    completionHandler(image)
+                }
+            })
+            sessionTask.resume()
+        }
     }
-
 }

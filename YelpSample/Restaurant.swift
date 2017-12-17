@@ -14,7 +14,7 @@ class Restaurant: NSObject {
     var address: String!
     var cityStateZip: String?
     var photoUrl: String?
-    var latestReview: String!
+    var latestReview: String?
     var ratingImageUrl: String?
     
     init?(dict: [String: Any]) {

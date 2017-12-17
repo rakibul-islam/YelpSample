@@ -17,6 +17,7 @@ class RestaurantViewController: UIViewController {
     @IBOutlet weak var ratingImageView: UIImageView!
     
     var restaurant: Restaurant?
+    lazy var yelpServices: YelpServicesProtocol = YelpServices()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,38 +27,13 @@ class RestaurantViewController: UIViewController {
             navigationItem.title = "Restaurant"
             nameLabel.text = restaurant.name
             addressLabel.text = restaurant.displayMultilineAddress()
-            reviewTextView.text = restaurant.latestReview
-            if let photoUrl = restaurant.photoUrl {
-                YelpServices.loadImageFromUrl(photoUrl, completionHandler: { (image) in
-                    if image != nil {
-                        self.photoImageView.image = image
-                    }
-                })
-            }
-            if let ratingImgUrl = restaurant.ratingImageUrl {
-                YelpServices.loadImageFromUrl(ratingImgUrl, completionHandler: { (image) in
-                    if image != nil {
-                        self.ratingImageView.image = image
-                    }
-                })
-            }
+            reviewTextView.text = restaurant.latestReview ?? ""
+            yelpServices.loadImageFrom(urlString: restaurant.photoUrl, completionHandler: { (image) in
+                self.photoImageView.image = image
+            })
+            yelpServices.loadImageFrom(urlString: restaurant.ratingImageUrl, completionHandler: { (image) in
+                self.ratingImageView.image = image
+            })
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
