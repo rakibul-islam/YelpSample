@@ -14,7 +14,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     var locationManager: CLLocationManager!
-    var geocoder: CLGeocoder!
     var restaurants = [Restaurant]()
     
     lazy var yelpServices: YelpServicesProtocol = YelpServices()
@@ -27,11 +26,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         locationManager.requestWhenInUseAuthorization()
         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
         locationManager.startMonitoringSignificantLocationChanges()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     //MARK: UITableView data source methods
