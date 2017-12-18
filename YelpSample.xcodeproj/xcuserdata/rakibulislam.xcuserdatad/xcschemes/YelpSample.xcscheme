@@ -29,6 +29,16 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F24A9CAA1FE739D300D80647"
+               BuildableName = "YelpSampleTests.xctest"
+               BlueprintName = "YelpSampleTests"
+               ReferencedContainer = "container:YelpSample.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
