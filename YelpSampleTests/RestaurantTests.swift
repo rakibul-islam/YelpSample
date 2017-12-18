@@ -36,4 +36,16 @@ class RestaurantTests: XCTestCase {
         XCTAssertEqual(restaurant.ratingImageUrl, "www.starimage.com")
         XCTAssertEqual(restaurant.latestReview, "Snippet")
     }
+    
+    func testInitRestaurant_withEmptyDict_shouldReturnNil() {
+        let dict = [String : Any]()
+        XCTAssertNil(Restaurant(dict: dict))
+    }
+    
+    func testInitRestaurant_withoutName_shouldReturnNil() {
+        let dict = ["image_url":"www.image.com",
+                    "rating_img_url_large":"www.starimage.com",
+                    "snippet_text": "Snippet"]
+        XCTAssertNil(Restaurant(dict: dict))
+    }
 }
