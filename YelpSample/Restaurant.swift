@@ -11,7 +11,7 @@ import Foundation
 class Restaurant: NSObject {
     
     var name: String!
-    var address: String!
+    var address: String?
     var cityStateZip: String?
     var photoUrl: String?
     var latestReview: String?
@@ -33,17 +33,23 @@ class Restaurant: NSObject {
     }
     
     func displayFullAddress() -> String {
-        guard let secondPart = cityStateZip else {
-            return address
+        guard let addressString = address else {
+            return ""
         }
-        return address + ", " + secondPart
+        guard let secondPart = cityStateZip else {
+            return addressString
+        }
+        return addressString + ", " + secondPart
     }
     
     func displayMultilineAddress() -> String {
-        guard let secondLine = cityStateZip else {
-            return address
+        guard let addressString = address else {
+            return ""
         }
-        return address + "\n" + secondLine
+        guard let secondLine = cityStateZip else {
+            return addressString
+        }
+        return addressString + "\n" + secondLine
     }
     
 }

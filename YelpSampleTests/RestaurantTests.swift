@@ -23,15 +23,56 @@ class RestaurantTests: XCTestCase {
     
     func testInitRestaurant_withDictionary_shouldCreateRestaurant() {
         // This is an example of a functional test case.
-        let dict = ["name":"Restaurant Name",
+        var dict: [String : Any] = ["name":"Restaurant Name",
                     "image_url":"www.image.com",
                     "rating_img_url_large":"www.starimage.com",
                     "snippet_text": "Snippet"]
+        dict["location"] = ["display_address": ["123 Fake Street","Springfield, OR 93982"]]
         guard let restaurant = Restaurant(dict: dict) else {
             XCTFail("Restaurant not created!")
             return
         }
         XCTAssertEqual(restaurant.name, "Restaurant Name")
+        XCTAssertEqual(restaurant.address, "123 Fake Street")
+        XCTAssertEqual(restaurant.cityStateZip, "Springfield, OR 93982")
+        XCTAssertEqual(restaurant.photoUrl, "www.image.com")
+        XCTAssertEqual(restaurant.ratingImageUrl, "www.starimage.com")
+        XCTAssertEqual(restaurant.latestReview, "Snippet")
+    }
+    
+    func testInitRestaurant_withLongerDictionary_shouldCreateRestaurant() {
+        // This is an example of a functional test case.
+        var dict: [String : Any] = ["name":"Restaurant Name",
+                                    "image_url":"www.image.com",
+                                    "rating_img_url_large":"www.starimage.com",
+                                    "snippet_text": "Snippet"]
+        dict["location"] = ["display_address": ["123 Fake Street","South Springfield","Springfield, OR 93982"]]
+        guard let restaurant = Restaurant(dict: dict) else {
+            XCTFail("Restaurant not created!")
+            return
+        }
+        XCTAssertEqual(restaurant.name, "Restaurant Name")
+        XCTAssertEqual(restaurant.address, "123 Fake Street")
+        XCTAssertEqual(restaurant.cityStateZip, "Springfield, OR 93982")
+        XCTAssertEqual(restaurant.photoUrl, "www.image.com")
+        XCTAssertEqual(restaurant.ratingImageUrl, "www.starimage.com")
+        XCTAssertEqual(restaurant.latestReview, "Snippet")
+    }
+    
+    func testInitRestaurant_withDisplayAddressTooSmall_shouldCreateRestaurantWithoutAddress() {
+        // This is an example of a functional test case.
+        var dict: [String : Any] = ["name":"Restaurant Name",
+                                    "image_url":"www.image.com",
+                                    "rating_img_url_large":"www.starimage.com",
+                                    "snippet_text": "Snippet"]
+        dict["location"] = ["display_address": ["123 Fake Street"]]
+        guard let restaurant = Restaurant(dict: dict) else {
+            XCTFail("Restaurant not created!")
+            return
+        }
+        XCTAssertEqual(restaurant.name, "Restaurant Name")
+        XCTAssertNil(restaurant.address)
+        XCTAssertNil(restaurant.cityStateZip)
         XCTAssertEqual(restaurant.photoUrl, "www.image.com")
         XCTAssertEqual(restaurant.ratingImageUrl, "www.starimage.com")
         XCTAssertEqual(restaurant.latestReview, "Snippet")
@@ -47,5 +88,25 @@ class RestaurantTests: XCTestCase {
                     "rating_img_url_large":"www.starimage.com",
                     "snippet_text": "Snippet"]
         XCTAssertNil(Restaurant(dict: dict))
+    }
+    
+    func testDisplayFullAddress_withCityStateZip_shouldReturnAddress() {
+        var dict: [String : Any] = ["name":"Restaurant Name",
+                                    "image_url":"www.image.com",
+                                    "rating_img_url_large":"www.starimage.com",
+                                    "snippet_text": "Snippet"]
+        dict["location"] = ["display_address": ["123 Fake Street","Springfield, OR 93982"]]
+        let restaurant = Restaurant(dict: dict)!
+        XCTAssertEqual(restaurant.displayFullAddress(), "123 Fake Street, Springfield, OR 93982")
+    }
+    
+    func testDisplayMultilineAddress_withCityStateZip_shouldReturnAddress() {
+        var dict: [String : Any] = ["name":"Restaurant Name",
+                                    "image_url":"www.image.com",
+                                    "rating_img_url_large":"www.starimage.com",
+                                    "snippet_text": "Snippet"]
+        dict["location"] = ["display_address": ["123 Fake Street","Springfield, OR 93982"]]
+        let restaurant = Restaurant(dict: dict)!
+        XCTAssertEqual(restaurant.displayMultilineAddress(), "123 Fake Street\nSpringfield, OR 93982")
     }
 }
