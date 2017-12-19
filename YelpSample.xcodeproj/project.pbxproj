@@ -10,6 +10,7 @@
 		0469928C84D92FFCEE18F134 /* Pods_YelpSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63A7EDEFEFE38409880219AC /* Pods_YelpSample.framework */; };
 		F206660B1CBF31B700F3CC23 /* RestaurantViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F206660A1CBF31B700F3CC23 /* RestaurantViewController.swift */; };
 		F24A9CB61FE739F400D80647 /* RestaurantTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24A9CB51FE739F400D80647 /* RestaurantTests.swift */; };
+		F24A9CBC1FE8B8A600D80647 /* ViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24A9CBB1FE8B8A600D80647 /* ViewControllerTests.swift */; };
 		F296FF7D1FE22A8F002D5FF3 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F296FF7C1FE22A8F002D5FF3 /* Podfile */; };
 		F2D553E41CBECFB5001EA4AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D553E31CBECFB5001EA4AB /* AppDelegate.swift */; };
 		F2D553E61CBECFB5001EA4AB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D553E51CBECFB5001EA4AB /* ViewController.swift */; };
@@ -38,6 +39,7 @@
 		F24A9CAB1FE739D300D80647 /* YelpSampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YelpSampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F24A9CAF1FE739D300D80647 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F24A9CB51FE739F400D80647 /* RestaurantTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantTests.swift; sourceTree = "<group>"; };
+		F24A9CBB1FE8B8A600D80647 /* ViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerTests.swift; sourceTree = "<group>"; };
 		F296FF7C1FE22A8F002D5FF3 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		F2D553E01CBECFB5001EA4AB /* YelpSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YelpSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2D553E31CBECFB5001EA4AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 			children = (
 				F24A9CAF1FE739D300D80647 /* Info.plist */,
 				F24A9CB51FE739F400D80647 /* RestaurantTests.swift */,
+				F24A9CBB1FE8B8A600D80647 /* ViewControllerTests.swift */,
 			);
 			path = YelpSampleTests;
 			sourceTree = "<group>";
@@ -295,6 +298,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F24A9CBC1FE8B8A600D80647 /* ViewControllerTests.swift in Sources */,
 				F24A9CB61FE739F400D80647 /* RestaurantTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
