@@ -11,26 +11,46 @@ import CoreLocation
 @testable import YelpSample
 
 class ViewControllerTests: XCTestCase {
+    var viewController: ViewController!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        viewController = storyboard.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        viewController.loadView()
     }
     
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
+    func testNumberOfRows_afterViewDidLoad_shouldReturn0() {
+        viewController.viewDidLoad()
+        XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testSearchButtonClicked_withSearchText_shouldReturnResults() {
+        let mockServices = MockYelpServices()
+        mockServices.success = true
+        mockServices.serviceSuccess = true
+        viewController.yelpServices = mockServices
+        let locationManager = MockCLLocationManager()
+        locationManager.mockLocation = CLLocation(latitude: 15.250, longitude: 15.250)
+        viewController.locationManager = locationManager
+        let searchBar = viewController.searchBar
+        searchBar?.text = "Cuisine"
+        viewController.searchBarSearchButtonClicked(searchBar!)
+        XCTAssertEqual(viewController.restaurants.count, 4)
+        XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 4)
     }
     
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testSearchButtonClicked_withoutSearchText_shouldNotReturnResults() {
+        viewController.searchBarSearchButtonClicked(viewController.searchBar!)
+        XCTAssertEqual(viewController.restaurants.count, 0)
+        XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
+    }
+    
+    class MockCLLocationManager: CLLocationManager {
+        var mockLocation: CLLocation!
+        
+        override var location: CLLocation? {
+            return mockLocation
         }
     }
     
@@ -48,6 +68,8 @@ class ViewControllerTests: XCTestCase {
                                            ["name": "Restaurant 4"]]
                     for restaurantName in restaurantNames {
                         if let restaurant = Restaurant(dict: restaurantName) {
+                            restaurant.address = "Some Address"
+                            restaurant.cityStateZip = "City, ST ZipCd"
                             restaurants.append(restaurant)
                         }
                     }
