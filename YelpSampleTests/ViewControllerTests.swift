@@ -46,6 +46,35 @@ class ViewControllerTests: XCTestCase {
         XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
     }
     
+    func testSearchButtonClicked_withInputFailure_shouldNotReturnResults() {
+        let mockServices = MockYelpServices()
+        mockServices.success = false
+        viewController.yelpServices = mockServices
+        let locationManager = MockCLLocationManager()
+        locationManager.mockLocation = CLLocation(latitude: 15.250, longitude: 15.250)
+        viewController.locationManager = locationManager
+        let searchBar = viewController.searchBar
+        searchBar?.text = "Cuisine"
+        viewController.searchBarSearchButtonClicked(searchBar!)
+        XCTAssertEqual(viewController.restaurants.count, 0)
+        XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
+    }
+    
+    func testSearchButtonClicked_withServiceFailure_shouldNotReturnResults() {
+        let mockServices = MockYelpServices()
+        mockServices.success = true
+        mockServices.serviceSuccess = false
+        viewController.yelpServices = mockServices
+        let locationManager = MockCLLocationManager()
+        locationManager.mockLocation = CLLocation(latitude: 15.250, longitude: 15.250)
+        viewController.locationManager = locationManager
+        let searchBar = viewController.searchBar
+        searchBar?.text = "Cuisine"
+        viewController.searchBarSearchButtonClicked(searchBar!)
+        XCTAssertEqual(viewController.restaurants.count, 0)
+        XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
+    }
+    
     class MockCLLocationManager: CLLocationManager {
         var mockLocation: CLLocation!
         
