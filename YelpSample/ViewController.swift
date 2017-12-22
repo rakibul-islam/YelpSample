@@ -59,7 +59,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: UISearchBar delegate methods
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if let searchText = searchBar.text {
+        if let searchText = searchBar.text, !searchText.isEmpty {
             yelpServices.searchYelpFor(term: searchText, location: locationManager.location, successBlock: { (restaurants) in
                 self.restaurants = restaurants
                 self.tableView.reloadData()
