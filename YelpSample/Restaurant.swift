@@ -24,8 +24,8 @@ class Restaurant: NSObject {
         super.init()
         self.name = name
         if let location = dict["location"] as? [String: Any], let displayAddress = location["display_address"] as? [String], displayAddress.count > 1 {
-            self.address = displayAddress[0]
-            self.cityStateZip = displayAddress.count >= 3 ? displayAddress[2] : displayAddress[1]
+            self.address = displayAddress.first
+            self.cityStateZip = displayAddress.last
         }
         self.photoUrl = dict["image_url"] as? String
         self.ratingImageUrl = dict["rating_img_url_large"] as? String

@@ -36,12 +36,14 @@ class ViewControllerTests: XCTestCase {
         let searchBar = viewController.searchBar
         searchBar?.text = "Cuisine"
         viewController.searchBarSearchButtonClicked(searchBar!)
+        XCTAssertFalse(searchBar!.isFirstResponder)
         XCTAssertEqual(viewController.restaurants.count, 4)
         XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 4)
     }
     
     func testSearchButtonClicked_withoutSearchText_shouldNotReturnResults() {
         viewController.searchBarSearchButtonClicked(viewController.searchBar!)
+        XCTAssertFalse(viewController.searchBar!.isFirstResponder)
         XCTAssertEqual(viewController.restaurants.count, 0)
         XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
     }
@@ -56,6 +58,7 @@ class ViewControllerTests: XCTestCase {
         let searchBar = viewController.searchBar
         searchBar?.text = "Cuisine"
         viewController.searchBarSearchButtonClicked(searchBar!)
+        XCTAssertFalse(searchBar!.isFirstResponder)
         XCTAssertEqual(viewController.restaurants.count, 0)
         XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
     }
@@ -71,6 +74,7 @@ class ViewControllerTests: XCTestCase {
         let searchBar = viewController.searchBar
         searchBar?.text = "Cuisine"
         viewController.searchBarSearchButtonClicked(searchBar!)
+        XCTAssertFalse(searchBar!.isFirstResponder)
         XCTAssertEqual(viewController.restaurants.count, 0)
         XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
     }
