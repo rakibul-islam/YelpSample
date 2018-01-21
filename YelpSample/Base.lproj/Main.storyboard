@@ -157,10 +157,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uMH-s4-snq">
-                                <rect key="frame" x="16" y="180" width="196" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="196" id="QaR-wp-zXn"/>
-                                </constraints>
+                                <rect key="frame" x="16" y="180" width="343" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -168,7 +165,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rating:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YN1-UU-hUH">
                                 <rect key="frame" x="16" y="387" width="100" height="56"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="cb5-KK-gUj"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="cb5-KK-gUj"/>
                                     <constraint firstAttribute="height" constant="56" id="pMl-6d-zhG"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -191,6 +188,7 @@
                             <constraint firstItem="R2A-dK-FGz" firstAttribute="trailing" secondItem="kZb-bd-mIW" secondAttribute="trailingMargin" id="8jP-wU-tZp"/>
                             <constraint firstItem="Dt2-Mp-Ijx" firstAttribute="leading" secondItem="kZb-bd-mIW" secondAttribute="leadingMargin" id="FHI-Tv-FSK"/>
                             <constraint firstItem="v9n-6j-FxA" firstAttribute="leading" secondItem="YN1-UU-hUH" secondAttribute="trailing" constant="14" id="MIq-eN-oug"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uMH-s4-snq" secondAttribute="trailing" id="SlW-Yg-z0E"/>
                             <constraint firstItem="ppS-wS-oFW" firstAttribute="leading" secondItem="kZb-bd-mIW" secondAttribute="leadingMargin" id="Uv4-PJ-PWJ"/>
                             <constraint firstItem="v9n-6j-FxA" firstAttribute="trailing" secondItem="kZb-bd-mIW" secondAttribute="trailingMargin" id="W5p-uT-2Xc"/>
                             <constraint firstItem="YN1-UU-hUH" firstAttribute="leading" secondItem="kZb-bd-mIW" secondAttribute="leadingMargin" id="Yh6-mv-WUm"/>
