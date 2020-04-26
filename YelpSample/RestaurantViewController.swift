@@ -12,7 +12,7 @@ class RestaurantViewController: UIViewController {
     //MARK: Properties
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var addressButton: UIButton!
     @IBOutlet weak var reviewTextView: UITextView!
     @IBOutlet weak var ratingImageView: UIImageView!
     
@@ -25,7 +25,7 @@ class RestaurantViewController: UIViewController {
         // Do any additional setup after loading the view.
         navigationItem.title = "Restaurant"
         nameLabel.text = restaurant.name
-        addressLabel.text = restaurant.displayMultilineAddress()
+        addressButton.setTitle(restaurant.displayMultilineAddress(), for: .normal)
         reviewTextView.text = restaurant.latestReview ?? ""
         yelpServices.loadImageFrom(urlString: restaurant.photoUrl, completionHandler: { (image) in
             DispatchQueue.main.async { [unowned self] in
@@ -37,5 +37,13 @@ class RestaurantViewController: UIViewController {
                 self.ratingImageView.image = image
             }
         })
+    }
+    
+    @IBAction func addressButtonClicked(_ sender: Any) {
+        if UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!), let googleMapsURL = restaurant.getGoogleMapsURL() {
+            UIApplication.shared.open(googleMapsURL, options: [:], completionHandler: nil)
+        } else if let appleMapsURL = restaurant.getAppleMapsURL() {
+            UIApplication.shared.open(appleMapsURL, options: [:], completionHandler: nil)
+        }
     }
 }

@@ -16,6 +16,8 @@ class Restaurant: NSObject {
     var photoUrl: String?
     var latestReview: String?
     var ratingImageUrl: String?
+    var latitude: NSNumber?
+    var longitude: NSNumber?
     
     init?(dict: [String: Any]) {
         guard !dict.isEmpty, let name = dict["name"] as? String else {
@@ -23,9 +25,15 @@ class Restaurant: NSObject {
         }
         super.init()
         self.name = name
-        if let location = dict["location"] as? [String: Any], let displayAddress = location["display_address"] as? [String], displayAddress.count > 1 {
-            self.address = displayAddress.first
-            self.cityStateZip = displayAddress.last
+        if let location = dict["location"] as? [String: Any] {
+            if let displayAddress = location["display_address"] as? [String], displayAddress.count > 1 {
+                self.address = displayAddress.first
+                self.cityStateZip = displayAddress.last
+            }
+            if let coordinates = location["coordinate"] as? [String: NSNumber] {
+                self.latitude = coordinates["latitude"]
+                self.longitude = coordinates["longitude"]
+            }
         }
         self.photoUrl = dict["image_url"] as? String
         self.ratingImageUrl = dict["rating_img_url_large"] as? String
@@ -50,6 +58,22 @@ class Restaurant: NSObject {
             return addressString
         }
         return addressString + "\n" + secondLine
+    }
+    
+    func getGoogleMapsURL() -> URL? {
+        guard let theLatitude = latitude, let theLongitude = longitude else {
+            return nil
+        }
+        let nameWithPlusSigns = name.replacingOccurrences(of: " ", with: "+")
+        return URL(string: "comgooglemaps://?q=\(nameWithPlusSigns)&center=\(theLatitude),\(theLongitude)") ?? nil
+    }
+    
+    func getAppleMapsURL() -> URL? {
+        guard let theLatitude = latitude, let theLongitude = longitude else {
+            return nil
+        }
+        let nameWithPlusSigns = name.replacingOccurrences(of: " ", with: "+")
+        return URL(string: "http://maps.apple.com/?q=\(nameWithPlusSigns)&ll=\(theLatitude),\(theLongitude)") ?? nil
     }
     
 }

@@ -27,7 +27,10 @@ class RestaurantTests: XCTestCase {
                     "image_url":"www.image.com",
                     "rating_img_url_large":"www.starimage.com",
                     "snippet_text": "Snippet"]
-        dict["location"] = ["display_address": ["123 Fake Street","Springfield, OR 93982"]]
+        dict["location"] = ["display_address": ["123 Fake Street","Springfield, OR 93982"],
+                            "coordinate": ["latitude": NSNumber(value: 1.23),
+                                           "longitude": NSNumber(value: 1.23)]
+        ]
         guard let restaurant = Restaurant(dict: dict) else {
             XCTFail("Restaurant not created!")
             return
@@ -38,6 +41,8 @@ class RestaurantTests: XCTestCase {
         XCTAssertEqual(restaurant.photoUrl, "www.image.com")
         XCTAssertEqual(restaurant.ratingImageUrl, "www.starimage.com")
         XCTAssertEqual(restaurant.latestReview, "Snippet")
+        XCTAssertEqual(restaurant.latitude, NSNumber(value: 1.23))
+        XCTAssertEqual(restaurant.longitude, NSNumber(value: 1.23))
     }
     
     func testInitRestaurant_withLongerDictionary_shouldCreateRestaurant() {
