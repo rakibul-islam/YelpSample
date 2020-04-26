@@ -9,7 +9,7 @@
 import Foundation
 
 class Restaurant: NSObject {
-    
+    var id: String
     var name: String!
     var address: String?
     var cityStateZip: String?
@@ -20,17 +20,18 @@ class Restaurant: NSObject {
     var longitude: NSNumber?
     
     init?(dict: [String: Any]) {
-        guard !dict.isEmpty, let name = dict["name"] as? String else {
+        guard !dict.isEmpty, let id = dict["id"] as? String else {
             return nil
         }
+        self.id = id
         super.init()
-        self.name = name
+        self.name = dict["name"] as? String ?? ""
         if let location = dict["location"] as? [String: Any] {
             if let displayAddress = location["display_address"] as? [String], displayAddress.count > 1 {
                 self.address = displayAddress.first
                 self.cityStateZip = displayAddress.last
             }
-            if let coordinates = location["coordinate"] as? [String: NSNumber] {
+            if let coordinates = location["coordinates"] as? [String: NSNumber] {
                 self.latitude = coordinates["latitude"]
                 self.longitude = coordinates["longitude"]
             }

@@ -16,7 +16,11 @@ class ViewControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        viewController = storyboard.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+        guard let vc = storyboard.instantiateViewController(withIdentifier: "ViewController") as? ViewController else {
+            XCTFail("ViewController not found!")
+            return
+        }
+        viewController = vc
         viewController.loadView()
     }
     
@@ -91,14 +95,14 @@ class ViewControllerTests: XCTestCase {
         var success = false
         var serviceSuccess = false
         
-        func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error) -> Void) {
+        func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error?) -> Void) {
             if success {
                 if serviceSuccess {
                     var restaurants = [Restaurant]()
-                    let restaurantNames = [["name": "Restaurant 1"],
-                                           ["name": "Restaurant 2"],
-                                           ["name": "Restaurant 3"],
-                                           ["name": "Restaurant 4"]]
+                    let restaurantNames = [["id": "Restaurant 1"],
+                                           ["id": "Restaurant 2"],
+                                           ["id": "Restaurant 3"],
+                                           ["id": "Restaurant 4"]]
                     for restaurantName in restaurantNames {
                         if let restaurant = Restaurant(dict: restaurantName) {
                             restaurant.address = "Some Address"
