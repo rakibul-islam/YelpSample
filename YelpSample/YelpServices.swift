@@ -11,25 +11,46 @@ import OAuthSwift
 import CoreLocation
 
 protocol YelpServicesProtocol {
-    func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error) -> Void)
+    func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error?) -> Void)
     func loadImageFrom(urlString: String?, completionHandler: @escaping (UIImage?) -> Void)
 }
 
 class YelpServices: YelpServicesProtocol {
-    let oauth_consumer_key = "4vn9EPpnj2XYrfpr1xjOlg"
-    let oauth_consumer_secret = "R4Dj5TCWNzAddqSOHnvEBvLqBHQ"
-    let oauth_token = "iLmN_54DxqdncbbD8TFROZrIErQKIvGL"
-    let oauth_token_secret = "Mc6MhG7ZI6uIWmubcF2ktuQg8TU"
+    let clientID = "G9jGPw1hizyBZ0ycfHzWiw"
+    let apiKey = "lVBlFivyqvkVCUWPul1aLdeI7bcBgLefC1wgKGQQ4Gs1gAxHBNbUF3cuTg1qbuO5zJLDpSYHYyFu2RJqql1PoNE3HIFI4c-baYEfB6luMRN3IMe-UEqtP81stq-lXnYx"
     
-    func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error) -> Void) {
-        let oauthswift = OAuthSwiftClient(consumerKey: oauth_consumer_key, consumerSecret: oauth_consumer_secret, oauthToken: oauth_token, oauthTokenSecret: oauth_token_secret, version: .oauth1)
-        let urlString = String.init(format: "https://api.yelp.com/v2/search/")
-        var parameters = ["term": term, "limit" : "10"]
-        if let cllocation = location {
-            parameters["ll"] = String(format: "%f,%f", cllocation.coordinate.latitude, cllocation.coordinate.longitude)
-            _ = oauthswift.get(urlString, parameters: parameters, success: { (response) in
+    private func getComponents() -> URLComponents {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.yelp.com"
+        components.path = "/v3/businesses/search"
+        return components
+    }
+    
+    func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error?) -> Void) {
+        let latitude = location?.coordinate.latitude ?? 0.0
+        let longitude = location?.coordinate.longitude ?? 0.0
+        var components = getComponents()
+        components.queryItems = [
+            URLQueryItem(name: "term", value: term),
+            URLQueryItem(name: "limit", value: "10"),
+            URLQueryItem(name: "latitude", value: "\(latitude)"),
+            URLQueryItem(name: "longitude", value: "\(longitude)")
+        ]
+        guard let url = components.url else {
+            failureBlock(nil)
+            return
+        }
+        var urlRequest = URLRequest(url: url)
+        urlRequest.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
+        let task = URLSession.shared.dataTask(with: urlRequest) { (data, urlResponse, error) in
+            if let error = error {
+                failureBlock(error)
+                return
+            }
+            if let data = data {
                 do {
-                    if let jsonDict = try JSONSerialization.jsonObject(with: response.data, options: []) as? [String: Any], let businesses = jsonDict["businesses"] as? [[String: Any]] {
+                    if let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any], let businesses = jsonDict["businesses"] as? [[String: Any]] {
                         var restaurants = [Restaurant]()
                         for business in businesses {
                             if let restaurant = Restaurant(dict: business) {
@@ -45,10 +66,9 @@ class YelpServices: YelpServicesProtocol {
                 catch let jsonError {
                     failureBlock(jsonError)
                 }
-            }, failure: { (error) in
-                failureBlock(error)
-            })
+            }
         }
+        task.resume()
     }
     
     func loadImageFrom(urlString: String?, completionHandler: @escaping (UIImage?) -> Void) {

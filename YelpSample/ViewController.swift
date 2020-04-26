@@ -63,16 +63,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         if let searchText = searchBar.text, !searchText.isEmpty {
             yelpServices.searchYelpFor(term: searchText, location: locationManager.location, successBlock: { (restaurants) in
                 self.restaurants = restaurants
-                self.tableView.reloadData()
-                if restaurants.count == 0 {
-                    let alertController = UIAlertController(title: "Error", message: "No results found!", preferredStyle: .alert)
-                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    self.present(alertController, animated: true, completion: nil)
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableView.reloadData()
+                    if restaurants.count == 0 {
+                        let alertController = UIAlertController(title: "Error", message: "No results found!", preferredStyle: .alert)
+                        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                        self?.present(alertController, animated: true, completion: nil)
+                    }
                 }
             }, failureBlock: { (error) in
-                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alertController, animated: true, completion: nil)
+                DispatchQueue.main.async { [weak self] in
+                    let alertController = UIAlertController(title: "Error", message: error?.localizedDescription ?? "An error occured, please try again.", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    self?.present(alertController, animated: true, completion: nil)
+                }
             })
         }
     }
