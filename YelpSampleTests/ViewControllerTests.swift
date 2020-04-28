@@ -106,7 +106,7 @@ class ViewControllerTests: XCTestCase {
                     for restaurantName in restaurantNames {
                         if let restaurant = Restaurant(dict: restaurantName) {
                             restaurant.address = "Some Address"
-                            restaurant.cityStateZip = "City, ST ZipCd"
+                            restaurant.city = ""
                             restaurants.append(restaurant)
                         }
                     }

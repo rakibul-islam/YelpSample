@@ -13,8 +13,9 @@ class RestaurantViewController: UIViewController {
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var addressButton: UIButton!
-    @IBOutlet weak var reviewTextView: UITextView!
-    @IBOutlet weak var ratingImageView: UIImageView!
+    @IBOutlet weak var ratingLabel: UILabel!
+    @IBOutlet weak var phoneButton: UIButton!
+    @IBOutlet weak var priceLabel: UILabel!
     
     var restaurant: Restaurant!
     lazy var yelpServices: YelpServicesProtocol = YelpServices()
@@ -26,15 +27,12 @@ class RestaurantViewController: UIViewController {
         navigationItem.title = "Restaurant"
         nameLabel.text = restaurant.name
         addressButton.setTitle(restaurant.displayMultilineAddress(), for: .normal)
-        reviewTextView.text = restaurant.latestReview ?? ""
+        ratingLabel.text = "\(restaurant.rating ?? 0)"
+        priceLabel.text = restaurant.price
+        phoneButton.setTitle(restaurant.displayPhone, for: .normal)
         yelpServices.loadImageFrom(urlString: restaurant.photoUrl, completionHandler: { (image) in
             DispatchQueue.main.async { [unowned self] in
                 self.photoImageView.image = image
-            }
-        })
-        yelpServices.loadImageFrom(urlString: restaurant.ratingImageUrl, completionHandler: { (image) in
-            DispatchQueue.main.async { [unowned self] in
-                self.ratingImageView.image = image
             }
         })
     }
@@ -44,6 +42,12 @@ class RestaurantViewController: UIViewController {
             UIApplication.shared.open(googleMapsURL, options: [:], completionHandler: nil)
         } else if let appleMapsURL = restaurant.getAppleMapsURL() {
             UIApplication.shared.open(appleMapsURL, options: [:], completionHandler: nil)
+        }
+    }
+    
+    @IBAction func phoneButtonTapped(_ sender: Any) {
+        if let telUrl = URL(string: "tel://\(restaurant.phone ?? "")") {
+            UIApplication.shared.open(telUrl, options: [:], completionHandler: nil)
         }
     }
 }
