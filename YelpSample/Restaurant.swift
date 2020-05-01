@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Restaurant: NSObject {
+class Restaurant: NSObject, Decodable {
     var id: String
     var name: String!
     var address: String?
@@ -18,59 +18,85 @@ class Restaurant: NSObject {
     var zipCode: String?
     var country: String?
     var photoUrl: String?
-    var rating: Double?
-    var latitude: NSNumber?
-    var longitude: NSNumber?
+    var rating = 0.0
+    var latitude: Double?
+    var longitude: Double?
     var transactions: [String] = []
     var isClosed: Bool = false
     var displayPhone: String?
     var phone: String?
     var price: String?
+    var url: URL?
+    var numberOfReviews = 0
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case location
+        case coordinates
+        case transactions
+        case photoUrl = "image_url"
+        case rating
+        case price
+        case isClosed = "is_closed"
+        case phone
+        case displayPhone = "display_phone"
+        case urlString = "url"
+        case numberOfReviews = "review_count"
+    }
+    
+    enum LocationKeys: String, CodingKey {
+        case address = "address1"
+        case address2
+        case city
+        case state
+        case zipCode = "zip_code"
+        case country
+    }
+    
+    enum CoordinateKeys: String, CodingKey {
+        case latitude
+        case longitude
+    }
+    
+    override init() {
+        id = UUID().uuidString
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
+        isClosed = try container.decodeIfPresent(Bool.self, forKey: .isClosed) ?? false
+        numberOfReviews = try container.decodeIfPresent(Int.self, forKey: .numberOfReviews) ?? 0
+        rating = try container.decodeIfPresent(Double.self, forKey: .rating) ?? 0.0
+        price = try container.decodeIfPresent(String.self, forKey: .price)
+        phone = try container.decodeIfPresent(String.self, forKey: .phone)
+        displayPhone = try container.decodeIfPresent(String.self, forKey: .displayPhone)
+        if let urlString = try container.decodeIfPresent(String.self, forKey: .urlString) {
+            url = URL(string: urlString)
+        }
+        
+        if let locationContainer = try? container.nestedContainer(keyedBy: LocationKeys.self, forKey: .location) {
+            address = try locationContainer.decodeIfPresent(String.self, forKey: .address)
+            address2 = try locationContainer.decodeIfPresent(String.self, forKey: .address2)
+            city = try locationContainer.decodeIfPresent(String.self, forKey: .city)
+            state = try locationContainer.decodeIfPresent(String.self, forKey: .state)
+            zipCode = try locationContainer.decodeIfPresent(String.self, forKey: .zipCode)
+            country = try locationContainer.decodeIfPresent(String.self, forKey: .country)
+        }
+        
+        if let coordinatesContainer = try? container.nestedContainer(keyedBy: CoordinateKeys.self, forKey: .coordinates) {
+            latitude = try coordinatesContainer.decodeIfPresent(Double.self, forKey: .latitude)
+            longitude = try coordinatesContainer.decodeIfPresent(Double.self, forKey: .longitude)
+        }
+    }
     
     lazy var nameWithPlusSigns: String = {
         let nameWithPlusSigns = name.replacingOccurrences(of: " ", with: "+")
         return nameWithPlusSigns
     }()
-    
-    init?(dict: [String: Any?]) {
-        guard !dict.isEmpty, let id = dict["id"] as? String else {
-            return nil
-        }
-        self.id = id
-        super.init()
-        self.name = dict["name"] as? String ?? ""
-        if let location = dict["location"] as? [String: Any] {
-            if let address1 = location["address1"] as? String {
-                self.address = address1
-            }
-            if let address2 = location["address2"] as? String {
-                self.address2 = address2
-            }
-            if let city = location["city"] as? String {
-                self.city = city
-            }
-            if let state = location["state"] as? String {
-                self.state = state
-            }
-            if let zip = location["zip_code"] as? String {
-                self.zipCode = zip
-            }
-            if let country = location["country"] as? String {
-                self.country = country
-            }
-        }
-        if let coordinates = dict["coordinates"] as? [String: NSNumber] {
-            self.latitude = coordinates["latitude"]
-            self.longitude = coordinates["longitude"]
-        }
-        self.transactions = dict["transactions"] as? [String] ?? []
-        self.photoUrl = dict["image_url"] as? String
-        self.rating = dict["rating"] as? Double
-        self.price = dict["price"] as? String
-        self.isClosed = dict["is_closed"] as? Bool ?? false
-        self.phone = dict["phone"] as? String
-        self.displayPhone = dict["display_phone"] as? String
-    }
     
     func displayFullAddress() -> String {
         guard let addressString = address else {

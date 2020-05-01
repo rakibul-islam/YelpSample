@@ -16,6 +16,7 @@ class RestaurantViewController: UIViewController {
     @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var phoneButton: UIButton!
     @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var yelpUrlButton: UIButton!
     
     var restaurant: Restaurant!
     lazy var yelpServices: YelpServicesProtocol = YelpServices()
@@ -27,7 +28,7 @@ class RestaurantViewController: UIViewController {
         navigationItem.title = "Restaurant"
         nameLabel.text = restaurant.name
         addressButton.setTitle(restaurant.displayMultilineAddress(), for: .normal)
-        ratingLabel.text = "\(restaurant.rating ?? 0)"
+        ratingLabel.text = "\(restaurant.rating) out of \(restaurant.numberOfReviews) reviews"
         priceLabel.text = restaurant.price
         phoneButton.setTitle(restaurant.displayPhone, for: .normal)
         yelpServices.loadImageFrom(urlString: restaurant.photoUrl, completionHandler: { (image) in
@@ -48,6 +49,12 @@ class RestaurantViewController: UIViewController {
     @IBAction func phoneButtonTapped(_ sender: Any) {
         if let telUrl = URL(string: "tel://\(restaurant.phone ?? "")") {
             UIApplication.shared.open(telUrl, options: [:], completionHandler: nil)
+        }
+    }
+    
+    @IBAction func urlButtonTapped(_ sender: Any) {
+        if let url = restaurant.url {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 }

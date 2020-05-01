@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="VFz-a1-1KU">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -148,7 +147,7 @@
                                     <action selector="addressButtonClicked:" destination="pKO-aP-caD" eventType="touchUpInside" id="wQf-h8-6W1"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oNL-TT-FRw">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="4.5" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oNL-TT-FRw">
                                 <rect key="frame" x="77.5" y="160" width="281.5" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -179,12 +178,21 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rys-fQ-x5O">
+                                <rect key="frame" x="16" y="256" width="343" height="30"/>
+                                <state key="normal" title="Go to Yelp"/>
+                                <connections>
+                                    <action selector="urlButtonTapped:" destination="pKO-aP-caD" eventType="touchUpInside" id="QQH-al-nAa"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="NrU-p3-YlE" firstAttribute="leading" secondItem="Dt2-Mp-Ijx" secondAttribute="trailing" constant="8" id="2pa-wo-4d0"/>
                             <constraint firstItem="YN1-UU-hUH" firstAttribute="top" secondItem="Dt2-Mp-Ijx" secondAttribute="bottom" constant="8" id="44I-73-ORe"/>
                             <constraint firstItem="eb5-P3-J1f" firstAttribute="bottom" secondItem="qEK-aI-Aba" secondAttribute="bottom" id="5CD-mP-nwQ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rys-fQ-x5O" secondAttribute="trailing" id="5Nq-J2-zQa"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="oNL-TT-FRw" secondAttribute="trailing" id="9gK-gg-EOv"/>
                             <constraint firstItem="3TN-HN-6x5" firstAttribute="leading" secondItem="kZb-bd-mIW" secondAttribute="leadingMargin" id="Bdp-qo-aXk"/>
                             <constraint firstItem="3TN-HN-6x5" firstAttribute="top" secondItem="qEK-aI-Aba" secondAttribute="bottom" constant="8" id="DPy-iA-s4V"/>
                             <constraint firstItem="eb5-P3-J1f" firstAttribute="top" secondItem="qEK-aI-Aba" secondAttribute="top" id="DXk-BE-eH2"/>
@@ -194,7 +202,6 @@
                             <constraint firstItem="oNL-TT-FRw" firstAttribute="leading" secondItem="YN1-UU-hUH" secondAttribute="trailing" constant="8" id="HWM-Cr-QGD"/>
                             <constraint firstItem="qEK-aI-Aba" firstAttribute="leading" secondItem="kZb-bd-mIW" secondAttribute="leadingMargin" id="P2I-LA-nTN"/>
                             <constraint firstItem="ZsU-TP-nqo" firstAttribute="top" secondItem="eb5-P3-J1f" secondAttribute="bottom" constant="8" id="Uy7-xN-AtK"/>
-                            <constraint firstItem="oNL-TT-FRw" firstAttribute="trailing" secondItem="kZb-bd-mIW" secondAttribute="trailingMargin" id="VbQ-nE-xtU"/>
                             <constraint firstItem="oNL-TT-FRw" firstAttribute="bottom" secondItem="YN1-UU-hUH" secondAttribute="bottom" id="WNb-SI-kd2"/>
                             <constraint firstItem="qEK-aI-Aba" firstAttribute="top" secondItem="YN1-UU-hUH" secondAttribute="bottom" constant="8" id="YWr-Xq-PhE"/>
                             <constraint firstItem="YN1-UU-hUH" firstAttribute="leading" secondItem="kZb-bd-mIW" secondAttribute="leadingMargin" id="Yh6-mv-WUm"/>
@@ -202,6 +209,8 @@
                             <constraint firstItem="oNL-TT-FRw" firstAttribute="top" secondItem="YN1-UU-hUH" secondAttribute="top" id="cgK-1S-jbx"/>
                             <constraint firstItem="ZsU-TP-nqo" firstAttribute="leading" secondItem="3TN-HN-6x5" secondAttribute="trailing" constant="8" id="drZ-M6-kNy"/>
                             <constraint firstItem="uZL-Zg-tkQ" firstAttribute="top" secondItem="NrU-p3-YlE" secondAttribute="bottom" constant="8" id="e16-4E-RIa"/>
+                            <constraint firstItem="rys-fQ-x5O" firstAttribute="leading" secondItem="kZb-bd-mIW" secondAttribute="leadingMargin" id="eDB-jU-rI2"/>
+                            <constraint firstItem="rys-fQ-x5O" firstAttribute="top" secondItem="ZsU-TP-nqo" secondAttribute="bottom" constant="8" id="jVs-ig-gKM"/>
                             <constraint firstItem="NrU-p3-YlE" firstAttribute="top" secondItem="fCP-S3-mGP" secondAttribute="bottom" constant="8" id="mFe-TB-iBY"/>
                             <constraint firstItem="uZL-Zg-tkQ" firstAttribute="leading" secondItem="Dt2-Mp-Ijx" secondAttribute="trailing" constant="8" id="rxe-SS-Ezu"/>
                             <constraint firstAttribute="trailingMargin" secondItem="uZL-Zg-tkQ" secondAttribute="trailing" id="u20-4q-Gs2"/>
@@ -217,6 +226,7 @@
                         <outlet property="photoImageView" destination="Dt2-Mp-Ijx" id="BIw-pP-GZV"/>
                         <outlet property="priceLabel" destination="ZsU-TP-nqo" id="gNh-c6-tfR"/>
                         <outlet property="ratingLabel" destination="oNL-TT-FRw" id="Mar-wa-gBf"/>
+                        <outlet property="yelpUrlButton" destination="rys-fQ-x5O" id="xTV-dW-96f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sbS-8a-4vg" userLabel="First Responder" sceneMemberID="firstResponder"/>
