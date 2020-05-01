@@ -99,16 +99,12 @@ class ViewControllerTests: XCTestCase {
             if success {
                 if serviceSuccess {
                     var restaurants = [Restaurant]()
-                    let restaurantNames = [["id": "Restaurant 1"],
-                                           ["id": "Restaurant 2"],
-                                           ["id": "Restaurant 3"],
-                                           ["id": "Restaurant 4"]]
-                    for restaurantName in restaurantNames {
-                        if let restaurant = Restaurant(dict: restaurantName) {
-                            restaurant.address = "Some Address"
-                            restaurant.cityStateZip = "City, ST ZipCd"
-                            restaurants.append(restaurant)
-                        }
+                    for index in 1...4 {
+                        let restaurant = Restaurant()
+                        restaurant.id = "Restaurant \(index)"
+                        restaurant.address = "Some Address"
+                        restaurant.city = ""
+                        restaurants.append(restaurant)
                     }
                     successBlock(restaurants)
                 } else {

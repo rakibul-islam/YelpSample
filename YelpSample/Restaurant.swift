@@ -8,73 +8,131 @@
 
 import Foundation
 
-class Restaurant: NSObject {
+class Restaurant: NSObject, Decodable {
     var id: String
-    var name: String!
+    var name: String = ""
     var address: String?
-    var cityStateZip: String?
+    var address2: String?
+    var city: String?
+    var state: String?
+    var zipCode: String?
+    var country: String?
     var photoUrl: String?
-    var latestReview: String?
-    var ratingImageUrl: String?
-    var latitude: NSNumber?
-    var longitude: NSNumber?
+    var rating = 0.0
+    var latitude: Double?
+    var longitude: Double?
+    var transactions: [String] = []
+    var isClosed: Bool = false
+    var displayPhone: String?
+    var phone: String?
+    var price: String?
+    var url: URL?
+    var numberOfReviews = 0
     
-    init?(dict: [String: Any]) {
-        guard !dict.isEmpty, let id = dict["id"] as? String else {
-            return nil
-        }
-        self.id = id
-        super.init()
-        self.name = dict["name"] as? String ?? ""
-        if let location = dict["location"] as? [String: Any] {
-            if let displayAddress = location["display_address"] as? [String], displayAddress.count > 1 {
-                self.address = displayAddress.first
-                self.cityStateZip = displayAddress.last
-            }
-            if let coordinates = location["coordinates"] as? [String: NSNumber] {
-                self.latitude = coordinates["latitude"]
-                self.longitude = coordinates["longitude"]
-            }
-        }
-        self.photoUrl = dict["image_url"] as? String
-        self.ratingImageUrl = dict["rating_img_url_large"] as? String
-        self.latestReview = dict["snippet_text"] as? String
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case location
+        case coordinates
+        case transactions
+        case photoUrl = "image_url"
+        case rating
+        case price
+        case isClosed = "is_closed"
+        case phone
+        case displayPhone = "display_phone"
+        case urlString = "url"
+        case numberOfReviews = "review_count"
     }
     
-    func displayFullAddress() -> String {
+    enum LocationKeys: String, CodingKey {
+        case address = "address1"
+        case address2
+        case city
+        case state
+        case zipCode = "zip_code"
+        case country
+    }
+    
+    enum CoordinateKeys: String, CodingKey {
+        case latitude
+        case longitude
+    }
+    
+    override init() {
+        id = UUID().uuidString
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl)
+        isClosed = try container.decodeIfPresent(Bool.self, forKey: .isClosed) ?? false
+        numberOfReviews = try container.decodeIfPresent(Int.self, forKey: .numberOfReviews) ?? 0
+        rating = try container.decodeIfPresent(Double.self, forKey: .rating) ?? 0.0
+        price = try container.decodeIfPresent(String.self, forKey: .price)
+        phone = try container.decodeIfPresent(String.self, forKey: .phone)
+        displayPhone = try container.decodeIfPresent(String.self, forKey: .displayPhone)
+        if let urlString = try container.decodeIfPresent(String.self, forKey: .urlString) {
+            url = URL(string: urlString)
+        }
+        
+        if let locationContainer = try? container.nestedContainer(keyedBy: LocationKeys.self, forKey: .location) {
+            address = try locationContainer.decodeIfPresent(String.self, forKey: .address)
+            address2 = try locationContainer.decodeIfPresent(String.self, forKey: .address2)
+            city = try locationContainer.decodeIfPresent(String.self, forKey: .city)
+            state = try locationContainer.decodeIfPresent(String.self, forKey: .state)
+            zipCode = try locationContainer.decodeIfPresent(String.self, forKey: .zipCode)
+            country = try locationContainer.decodeIfPresent(String.self, forKey: .country)
+        }
+        
+        if let coordinatesContainer = try? container.nestedContainer(keyedBy: CoordinateKeys.self, forKey: .coordinates) {
+            latitude = try coordinatesContainer.decodeIfPresent(Double.self, forKey: .latitude)
+            longitude = try coordinatesContainer.decodeIfPresent(Double.self, forKey: .longitude)
+        }
+    }
+    
+    lazy var fullAddress: String = {
         guard let addressString = address else {
             return ""
         }
-        guard let secondPart = cityStateZip else {
-            return addressString
+        guard let city = city,
+            let state = state,
+            let zip = zipCode else {
+                return addressString
         }
-        return addressString + ", " + secondPart
-    }
+        return addressString + ", " + city + ", " + state + " " + zip
+    }()
     
-    func displayMultilineAddress() -> String {
+    lazy var multilineAddress: String = {
         guard let addressString = address else {
             return ""
         }
-        guard let secondLine = cityStateZip else {
-            return addressString
+        guard let city = city,
+            let state = state,
+            let zip = zipCode else {
+                return addressString
         }
-        return addressString + "\n" + secondLine
-    }
+        return addressString + "\n" + city + ", " + state + " " + zip
+    }()
     
-    func getGoogleMapsURL() -> URL? {
+    var googleMapsURL: URL? {
         guard let theLatitude = latitude, let theLongitude = longitude else {
             return nil
         }
-        let nameWithPlusSigns = name.replacingOccurrences(of: " ", with: "+")
-        return URL(string: "comgooglemaps://?q=\(nameWithPlusSigns)&center=\(theLatitude),\(theLongitude)") ?? nil
+        return URL(string: "comgooglemaps://?q=\(nameWithPlusSigns)&center=\(theLatitude),\(theLongitude)")
     }
     
-    func getAppleMapsURL() -> URL? {
+    var appleMapsURL: URL? {
         guard let theLatitude = latitude, let theLongitude = longitude else {
             return nil
         }
-        let nameWithPlusSigns = name.replacingOccurrences(of: " ", with: "+")
-        return URL(string: "http://maps.apple.com/?q=\(nameWithPlusSigns)&ll=\(theLatitude),\(theLongitude)") ?? nil
+        return URL(string: "https://maps.apple.com/?q=\(nameWithPlusSigns)&ll=\(theLatitude),\(theLongitude)")
     }
     
+    private lazy var nameWithPlusSigns: String = {
+        let nameWithPlusSigns = name.replacingOccurrences(of: " ", with: "+")
+        return nameWithPlusSigns
+    }()
 }

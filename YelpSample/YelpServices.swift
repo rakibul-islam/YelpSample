@@ -50,12 +50,8 @@ class YelpServices: YelpServicesProtocol {
             if let data = data {
                 do {
                     if let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any], let businesses = jsonDict["businesses"] as? [[String: Any]] {
-                        var restaurants = [Restaurant]()
-                        for business in businesses {
-                            if let restaurant = Restaurant(dict: business) {
-                                restaurants.append(restaurant)
-                            }
-                        }
+                        let businessData = try JSONSerialization.data(withJSONObject: businesses, options: [])
+                        let restaurants = try JSONDecoder().decode([Restaurant].self, from: businessData)
                         successBlock(restaurants)
                     } else {
                         let error = NSError(domain: "JSON", code: 404, userInfo: [NSLocalizedDescriptionKey: "No business found!"])

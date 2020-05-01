@@ -43,7 +43,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         let restaurant = restaurants[indexPath.row]
         cell?.textLabel?.text = restaurant.name
-        cell?.detailTextLabel?.text = restaurant.displayFullAddress()
+        cell?.detailTextLabel?.text = restaurant.fullAddress
         return cell!
     }
     
