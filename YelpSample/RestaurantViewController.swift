@@ -27,7 +27,7 @@ class RestaurantViewController: UIViewController {
         // Do any additional setup after loading the view.
         navigationItem.title = "Restaurant"
         nameLabel.text = restaurant.name
-        addressButton.setTitle(restaurant.displayMultilineAddress(), for: .normal)
+        addressButton.setTitle(restaurant.multilineAddress, for: .normal)
         ratingLabel.text = "\(restaurant.rating) out of \(restaurant.numberOfReviews) reviews"
         priceLabel.text = restaurant.price
         phoneButton.setTitle(restaurant.displayPhone, for: .normal)
@@ -39,9 +39,9 @@ class RestaurantViewController: UIViewController {
     }
     
     @IBAction func addressButtonClicked(_ sender: Any) {
-        if UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!), let googleMapsURL = restaurant.getGoogleMapsURL() {
+        if UIApplication.shared.canOpenURL(URL(string:"comgooglemaps://")!), let googleMapsURL = restaurant.googleMapsURL {
             UIApplication.shared.open(googleMapsURL, options: [:], completionHandler: nil)
-        } else if let appleMapsURL = restaurant.getAppleMapsURL() {
+        } else if let appleMapsURL = restaurant.appleMapsURL {
             UIApplication.shared.open(appleMapsURL, options: [:], completionHandler: nil)
         }
     }

@@ -108,27 +108,65 @@ class RestaurantTests: XCTestCase {
         XCTAssertNil(restaurant)
     }
     
-    func testDisplayFullAddress_withCityStateZip_shouldReturnAddress() {
+    func testGetFullAddress_withCityStateZip_shouldReturnAddress() {
         let restaurant = Restaurant()
         restaurant.address = "123 Fake Street"
         restaurant.city = "Springfield"
         restaurant.state = "OR"
         restaurant.zipCode = "93982"
         
-        let address = restaurant.displayFullAddress()
+        let address = restaurant.fullAddress
         
         XCTAssertEqual(address, "123 Fake Street, Springfield, OR 93982")
     }
     
-    func testDisplayMultilineAddress_withCityStateZip_shouldReturnAddress() {
+    func testGetMultilineAddress_withCityStateZip_shouldReturnAddress() {
         let restaurant = Restaurant()
         restaurant.address = "123 Fake Street"
         restaurant.city = "Springfield"
         restaurant.state = "OR"
         restaurant.zipCode = "93982"
         
-        let address = restaurant.displayMultilineAddress()
+        let address = restaurant.multilineAddress
         
         XCTAssertEqual(address, "123 Fake Street\nSpringfield, OR 93982")
+    }
+    
+    func testGetGoogleMapsURL_withoutCoordinates_shouldReturnNil() {
+        let restaurant = Restaurant()
+        
+        let url = restaurant.googleMapsURL
+        
+        XCTAssertNil(url)
+    }
+    
+    func testGetGoogleMapsURL_withNameAndCoordinates_shouldReturnNil() {
+        let restaurant = Restaurant()
+        restaurant.name = "The Restaurant"
+        restaurant.latitude = 1.23
+        restaurant.longitude = 4.56
+        
+        let url = restaurant.googleMapsURL
+        
+        XCTAssertEqual(url, URL(string: "comgooglemaps://?q=The+Restaurant&center=1.23,4.56"))
+    }
+    
+    func testGetAppleMapsURL_withoutCoordinates_shouldReturnNil() {
+        let restaurant = Restaurant()
+        
+        let url = restaurant.appleMapsURL
+        
+        XCTAssertNil(url)
+    }
+    
+    func testGetAppleMapsURL_withNameAndCoordinates_shouldReturnNil() {
+        let restaurant = Restaurant()
+        restaurant.name = "The Restaurant"
+        restaurant.latitude = 1.23
+        restaurant.longitude = 4.56
+        
+        let url = restaurant.appleMapsURL
+        
+        XCTAssertEqual(url, URL(string: "https://maps.apple.com/?q=The+Restaurant&ll=1.23,4.56"))
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 class Restaurant: NSObject, Decodable {
     var id: String
-    var name: String!
+    var name: String = ""
     var address: String?
     var address2: String?
     var city: String?
@@ -93,12 +93,7 @@ class Restaurant: NSObject, Decodable {
         }
     }
     
-    lazy var nameWithPlusSigns: String = {
-        let nameWithPlusSigns = name.replacingOccurrences(of: " ", with: "+")
-        return nameWithPlusSigns
-    }()
-    
-    func displayFullAddress() -> String {
+    lazy var fullAddress: String = {
         guard let addressString = address else {
             return ""
         }
@@ -108,9 +103,9 @@ class Restaurant: NSObject, Decodable {
                 return addressString
         }
         return addressString + ", " + city + ", " + state + " " + zip
-    }
+    }()
     
-    func displayMultilineAddress() -> String {
+    lazy var multilineAddress: String = {
         guard let addressString = address else {
             return ""
         }
@@ -120,20 +115,24 @@ class Restaurant: NSObject, Decodable {
                 return addressString
         }
         return addressString + "\n" + city + ", " + state + " " + zip
-    }
+    }()
     
-    func getGoogleMapsURL() -> URL? {
+    var googleMapsURL: URL? {
         guard let theLatitude = latitude, let theLongitude = longitude else {
             return nil
         }
-        return URL(string: "comgooglemaps://?q=\(nameWithPlusSigns)&center=\(theLatitude),\(theLongitude)") ?? nil
+        return URL(string: "comgooglemaps://?q=\(nameWithPlusSigns)&center=\(theLatitude),\(theLongitude)")
     }
     
-    func getAppleMapsURL() -> URL? {
+    var appleMapsURL: URL? {
         guard let theLatitude = latitude, let theLongitude = longitude else {
             return nil
         }
-        return URL(string: "http://maps.apple.com/?q=\(nameWithPlusSigns)&ll=\(theLatitude),\(theLongitude)") ?? nil
+        return URL(string: "https://maps.apple.com/?q=\(nameWithPlusSigns)&ll=\(theLatitude),\(theLongitude)")
     }
     
+    private lazy var nameWithPlusSigns: String = {
+        let nameWithPlusSigns = name.replacingOccurrences(of: " ", with: "+")
+        return nameWithPlusSigns
+    }()
 }
