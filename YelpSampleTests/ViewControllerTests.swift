@@ -41,14 +41,19 @@ class ViewControllerTests: XCTestCase {
         searchBar?.text = "Cuisine"
         viewController.searchBarSearchButtonClicked(searchBar!)
         XCTAssertFalse(searchBar!.isFirstResponder)
-        XCTAssertEqual(viewController.restaurants.count, 4)
-        XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 4)
+        let countExpectation = expectation(description: "search finished")
+        DispatchQueue.main.async {
+            XCTAssertEqual(self.viewController.businessSearch?.businesses.count, 4)
+            XCTAssertEqual(self.viewController.tableView(self.viewController.tableView, numberOfRowsInSection: 0), 4)
+            countExpectation.fulfill()
+        }
+        wait(for: [countExpectation], timeout: 10)
     }
     
     func testSearchButtonClicked_withoutSearchText_shouldNotReturnResults() {
         viewController.searchBarSearchButtonClicked(viewController.searchBar!)
         XCTAssertFalse(viewController.searchBar!.isFirstResponder)
-        XCTAssertEqual(viewController.restaurants.count, 0)
+        XCTAssertNil(viewController.businessSearch)
         XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
     }
     
@@ -63,7 +68,7 @@ class ViewControllerTests: XCTestCase {
         searchBar?.text = "Cuisine"
         viewController.searchBarSearchButtonClicked(searchBar!)
         XCTAssertFalse(searchBar!.isFirstResponder)
-        XCTAssertEqual(viewController.restaurants.count, 0)
+        XCTAssertNil(viewController.businessSearch)
         XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
     }
     
@@ -79,7 +84,7 @@ class ViewControllerTests: XCTestCase {
         searchBar?.text = "Cuisine"
         viewController.searchBarSearchButtonClicked(searchBar!)
         XCTAssertFalse(searchBar!.isFirstResponder)
-        XCTAssertEqual(viewController.restaurants.count, 0)
+        XCTAssertNil(viewController.businessSearch)
         XCTAssertEqual(viewController.tableView(viewController.tableView, numberOfRowsInSection: 0), 0)
     }
     
@@ -95,7 +100,7 @@ class ViewControllerTests: XCTestCase {
         var success = false
         var serviceSuccess = false
         
-        func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error?) -> Void) {
+        func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping (BusinessSearch) -> Void, failureBlock: @escaping (Error?) -> Void) {
             if success {
                 if serviceSuccess {
                     var restaurants = [Restaurant]()
@@ -106,7 +111,9 @@ class ViewControllerTests: XCTestCase {
                         restaurant.city = ""
                         restaurants.append(restaurant)
                     }
-                    successBlock(restaurants)
+                    var businessSearch = BusinessSearch()
+                    businessSearch.businesses = restaurants
+                    successBlock(businessSearch)
                 } else {
                     let error = NSError(domain: "Service Error", code: 404, userInfo: [NSLocalizedDescriptionKey: "The service bombed!"])
                     failureBlock(error)

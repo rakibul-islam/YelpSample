@@ -14,7 +14,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     var locationManager: CLLocationManager!
-    var restaurants = [Restaurant]()
+    var businessSearch: BusinessSearch? {
+        didSet {
+            tableView.reloadData()
+            if businessSearch?.businesses.count == 0 {
+                let alertController = UIAlertController(title: "Error", message: "No results found!", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
     
     lazy var yelpServices: YelpServicesProtocol = YelpServices()
     
@@ -31,28 +40,37 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: UITableView data source methods
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1;
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return restaurants.count;
+        return businessSearch?.businesses.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cellIdentifier") ?? UITableViewCell(style: .subtitle, reuseIdentifier: "cellIdentifier")
         
-        let restaurant = restaurants[indexPath.row]
-        cell?.textLabel?.text = restaurant.name
-        cell?.detailTextLabel?.text = restaurant.fullAddress
-        return cell!
+        if let restaurant = businessSearch?.businesses[indexPath.row] {
+            cell.textLabel?.text = restaurant.name
+            cell.detailTextLabel?.text = restaurant.fullAddress
+        }
+        cell.accessoryType = .disclosureIndicator
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        performSegue(withIdentifier: "showDetail", sender: cell)
     }
     
     //MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let restaurantViewController = segue.destination as? RestaurantViewController {
-            let indexPath = tableView.indexPathForSelectedRow!
-            restaurantViewController.restaurant = restaurants[indexPath.row]
+        if let restaurantViewController = segue.destination as? RestaurantViewController,
+            let cell = sender as? UITableViewCell,
+            let indexPath = tableView.indexPath(for: cell),
+            let restaurant = businessSearch?.businesses[indexPath.row] {
+            restaurantViewController.restaurant = restaurant
         }
     }
     
@@ -61,15 +79,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
         if let searchText = searchBar.text, !searchText.isEmpty {
-            yelpServices.searchYelpFor(term: searchText, location: locationManager.location, successBlock: { (restaurants) in
-                self.restaurants = restaurants
+            yelpServices.searchYelpFor(term: searchText, location: locationManager.location, successBlock: { (businessSearch) in
                 DispatchQueue.main.async { [weak self] in
-                    self?.tableView.reloadData()
-                    if restaurants.count == 0 {
-                        let alertController = UIAlertController(title: "Error", message: "No results found!", preferredStyle: .alert)
-                        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                        self?.present(alertController, animated: true, completion: nil)
-                    }
+                    self?.businessSearch = businessSearch
                 }
             }, failureBlock: { (error) in
                 DispatchQueue.main.async { [weak self] in
@@ -84,10 +96,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     //MARK: UIBarButton methods
     
     @IBAction func sortButtonClicked(_ sender: AnyObject) {
-        restaurants.sort(by: { (a, b) -> Bool in
+        businessSearch?.businesses.sort(by: { (a, b) -> Bool in
             return a.name.compare(b.name) == ComparisonResult.orderedAscending
         })
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
 }
 
