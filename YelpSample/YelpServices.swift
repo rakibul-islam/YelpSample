@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 
 protocol YelpServicesProtocol {
-    func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error?) -> Void)
+    func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping (BusinessSearch) -> Void, failureBlock: @escaping (Error?) -> Void)
     func loadImageFrom(urlString: String?, completionHandler: @escaping (UIImage?) -> Void)
 }
 
@@ -26,7 +26,7 @@ class YelpServices: YelpServicesProtocol {
         return components
     }
     
-    func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping ([Restaurant]) -> Void, failureBlock: @escaping (Error?) -> Void) {
+    func searchYelpFor(term: String, location: CLLocation?, successBlock: @escaping (BusinessSearch) -> Void, failureBlock: @escaping (Error?) -> Void) {
         let latitude = location?.coordinate.latitude ?? 0.0
         let longitude = location?.coordinate.longitude ?? 0.0
         var components = getComponents()
@@ -49,14 +49,8 @@ class YelpServices: YelpServicesProtocol {
             }
             if let data = data {
                 do {
-                    if let jsonDict = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any], let businesses = jsonDict["businesses"] as? [[String: Any]] {
-                        let businessData = try JSONSerialization.data(withJSONObject: businesses, options: [])
-                        let restaurants = try JSONDecoder().decode([Restaurant].self, from: businessData)
-                        successBlock(restaurants)
-                    } else {
-                        let error = NSError(domain: "JSON", code: 404, userInfo: [NSLocalizedDescriptionKey: "No business found!"])
-                        failureBlock(error as Error)
-                    }
+                    let businessSearch = try JSONDecoder().decode(BusinessSearch.self, from: data)
+                    successBlock(businessSearch)
                 }
                 catch let jsonError {
                     failureBlock(jsonError)

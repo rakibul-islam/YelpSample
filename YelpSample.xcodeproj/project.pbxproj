@@ -17,6 +17,7 @@
 		F2D553EE1CBECFB5001EA4AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2D553EC1CBECFB5001EA4AB /* LaunchScreen.storyboard */; };
 		F2D553F61CBED1F7001EA4AB /* Restaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D553F51CBED1F7001EA4AB /* Restaurant.swift */; };
 		F2D553FA1CBED5D5001EA4AB /* YelpServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2D553F91CBED5D5001EA4AB /* YelpServices.swift */; };
+		F2FA52192460F80D00AA4AFB /* BusinessSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2FA52182460F80D00AA4AFB /* BusinessSearch.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		F2D553EF1CBECFB5001EA4AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F2D553F51CBED1F7001EA4AB /* Restaurant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Restaurant.swift; sourceTree = "<group>"; };
 		F2D553F91CBED5D5001EA4AB /* YelpServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YelpServices.swift; sourceTree = "<group>"; };
+		F2FA52182460F80D00AA4AFB /* BusinessSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessSearch.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				F2D553F51CBED1F7001EA4AB /* Restaurant.swift */,
 				F2D553F91CBED5D5001EA4AB /* YelpServices.swift */,
 				F206660A1CBF31B700F3CC23 /* RestaurantViewController.swift */,
+				F2FA52182460F80D00AA4AFB /* BusinessSearch.swift */,
 			);
 			path = YelpSample;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 				F2D553E41CBECFB5001EA4AB /* AppDelegate.swift in Sources */,
 				F2D553F61CBED1F7001EA4AB /* Restaurant.swift in Sources */,
 				F2D553FA1CBED5D5001EA4AB /* YelpServices.swift in Sources */,
+				F2FA52192460F80D00AA4AFB /* BusinessSearch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

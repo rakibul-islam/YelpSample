@@ -37,35 +37,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Aei-14-2Gz">
                                 <rect key="frame" x="0.0" y="100" width="375" height="567"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="0.0" reuseIdentifier="cellIdentifier" textLabel="Dry-X3-12J" detailTextLabel="LZc-tf-C79" style="IBUITableViewCellStyleSubtitle" id="C3J-jF-foA">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="C3J-jF-foA" id="EhU-Wn-RH5">
-                                            <rect key="frame" x="0.0" y="0.0" width="349" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Dry-X3-12J">
-                                                    <rect key="frame" x="15" y="6" width="31.5" height="19.5"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LZc-tf-C79">
-                                                    <rect key="frame" x="15" y="25.5" width="40.5" height="13.5"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="pKO-aP-caD" kind="show" identifier="showRestaurant" id="H67-dT-3a9"/>
-                                        </connections>
-                                    </tableViewCell>
-                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="9Gy-NC-mAL"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="HyS-UP-GJo"/>
@@ -100,6 +71,7 @@
                     <connections>
                         <outlet property="searchBar" destination="LVs-Ff-cpN" id="WLu-hF-CSf"/>
                         <outlet property="tableView" destination="Aei-14-2Gz" id="9G5-2F-HY8"/>
+                        <segue destination="pKO-aP-caD" kind="show" identifier="showDetail" id="r8W-mm-Cu5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -219,6 +191,7 @@
                             <constraint firstItem="NrU-p3-YlE" firstAttribute="trailing" secondItem="kZb-bd-mIW" secondAttribute="trailingMargin" id="xbX-zb-Dg7"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="F2j-6j-FRa"/>
                     <connections>
                         <outlet property="addressButton" destination="uZL-Zg-tkQ" id="Uyq-51-uDl"/>
                         <outlet property="nameLabel" destination="NrU-p3-YlE" id="BVJ-4d-rpp"/>
